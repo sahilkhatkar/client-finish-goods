@@ -1,0 +1,159 @@
+/* Topbar */
+.topbar {
+  height: 60px;
+  background: var(--header-bg);
+  color: var(--header-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  /* border-bottom: 1px solid var(--border); */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  font-family: var(--font-family);
+
+
+   /* ✅ Glassmorphism effect */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background-clip: padding-box;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+
+
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Avatar */
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid var(--primary-light);
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 220px;
+  text-align: left;
+  z-index: 20;
+}
+
+.dropdown .name {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.dropdown .email {
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+/* Logout Button (Header version) */
+.logout {
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--header-text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.logout:hover {
+  background: var(--hover-bg);
+  color: var(--primary);
+}
+
+/* Logout (Dropdown version – red button) */
+.dropdown .logout {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.dropdown .logout:hover {
+  background: #e03131;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .left {
+    margin-left: 3rem;
+  }
+
+  .logo {
+    font-size: 1.05rem;
+  }
+
+  .logout {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+
+
+/* NEW CSS */
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.avatarFallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  /* text-transform: uppercase; */
+}

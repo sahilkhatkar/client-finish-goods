@@ -1,0 +1,113 @@
+/* globals.css */
+
+/* Reset & Base */
+:root {
+  --font-family: 'Segoe UI', sans-serif;
+  --transition: 0.3s ease;
+
+  /* Smaller & Minimal Font Sizes */
+  --font-xs: 0.65rem;   /* ~10px */
+  --font-sm: 0.75rem;   /* ~12px */
+  --font-base: 0.875rem; /* ~14px */
+  --font-md: 1rem;      /* ~16px */
+  --font-lg: 1.125rem;  /* ~18px */
+  --font-xl: 1.25rem;   /* ~20px */
+}
+
+
+/* Light Theme */
+.theme-light {
+  --bg: #f9f9ff;
+  --text: #1e1e2f;
+  --card-bg: #ffffff;
+  --primary: #6200ea;
+  --primary-light: #ede7f6;
+  --secondary: #03dac6;
+  --accent: #ff4081;
+  --header-bg: #f3f0fb;
+  --header-text: #4b0082;
+  --hover-bg: #f1f9ff;
+  --border: #e0e0e0;
+}
+
+/* Dark Theme */
+.theme-dark {
+  --bg: #121212;
+  --text: #f1f1f1;
+  --card-bg: #1e1e1e;
+  --primary: #bb86fc;
+  --primary-light: #2a2a2a;
+  --secondary: #03dac6;
+  --accent: #cf6679;
+  --header-bg: #1f1f1f;
+  --header-text: #ffffff;
+  --hover-bg: #2c2c2c;
+  --border: #333;
+}
+
+/* Modern Theme */
+.theme-modern {
+  --bg: #ffffff;
+  --text: #1e1e2f;
+  --card-bg: #f3f3f8;
+  --primary: #4a90e2;
+  --primary-light: #d6e4ff;
+  --secondary: #50e3c2;
+  --accent: #ff6ec4;
+  --header-bg: #eaf4ff;
+  --header-text: #111;
+  --hover-bg: #eef7fd;
+  --border: #dcdcdc;
+}
+
+/* Skywarm Theme */
+.theme-skywarm {
+  --bg: #f5f0cd;
+  --text: #1e1e2f;
+  --card-bg: #ffffff;
+  --primary: #3674b5;
+  /* Deep blue */
+  --primary-light: #578fca;
+  /* Light blue */
+  --secondary: #fada7a;
+  /* Warm yellow */
+  --accent: #fada7a;
+  --header-bg: #fada7a;
+  --header-text: #1e1e2f;
+  --hover-bg: #fef7dc;
+  --border: #d1cfc2;
+}
+
+/* Cyberwave Theme */
+.theme-cyberwave {
+  --bg: #0f0f1b;
+  --text: #e5e5f7;
+  --card-bg: #1a1a2e;
+  --primary: #7f5af0;
+  --primary-light: #a18fff;
+  --secondary: #2cb67d;
+  --accent: #ff8906;
+  --header-bg: #161625;
+  --header-text: #ffffff;
+  --hover-bg: #2c2c4b;
+  --border: #3a3a5a;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

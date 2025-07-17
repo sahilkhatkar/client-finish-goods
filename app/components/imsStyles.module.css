@@ -1,0 +1,303 @@
+.tableContainer {
+  padding: 1.5rem;
+  background: var(--bg);
+}
+
+.tableTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.tableSubTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.tableWrapper {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px;
+  border: 1px solid var(--border);
+}
+
+.animatedTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.animatedTable th,
+.animatedTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  color: var(--text);
+}
+
+.animatedTable th {
+  background: var(--header-bg);
+  color: var(--header-text);
+  font-weight: bold;
+  font-size: 0.95rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.animatedTable th:hover {
+  color: var(--primary);
+}
+
+.tableRow {
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tableRow:hover {
+  background-color: var(--hover-bg);
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.actionsCol {
+  width: 100px;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tableRow:hover .actionsCell {
+  opacity: 1;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.iconBtn:hover {
+  color: var(--primary);
+  transform: scale(1.2);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: 1.5rem;
+  gap: 1rem;
+}
+
+.pageBtn {
+  padding: 0.4rem 1.2rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: var(--primary);
+  color: var(--card-bg);
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-weight: bold;
+}
+
+/* Search */
+.searchBarWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.searchBar {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+  transition: border-color 0.3s ease;
+}
+
+.searchBar:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.2);
+}
+
+/* Filters */
+.filters,
+.filtersWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.columnFilter {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  gap: 4px;
+  min-width: 180px;
+}
+
+.columnFilter label {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.reactSelect {
+  min-width: 200px;
+  z-index: 2;
+}
+
+.reactSelect > div {
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rowsPerPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  gap: 0.3rem;
+}
+
+.rowsPerPage select {
+  min-height: 34px;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* Add Button */
+.addButton {
+  background: var(--primary);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-end;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s ease;
+}
+
+.addButton:hover {
+  background: #5e35b1;
+}
+
+/* Clear Filters */
+.clearFiltersWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.clearFiltersBtn {
+  padding: 6px 12px;
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.clearFiltersBtn:hover {
+  background-color: var(--color-danger-hover);
+}
+
+/* Live Dot */
+.liveDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 0.6rem;
+  animation: blink 1s infinite;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Stock Quantity Summary */
+.totalStockQty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.totalStockQty p {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 1rem;
+}
+
+.totalStockQty span {
+  font-weight: 500;
+}
