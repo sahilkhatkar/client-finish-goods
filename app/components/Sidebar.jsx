@@ -10,6 +10,7 @@ import { FaDatabase, FaBoxes } from 'react-icons/fa';
 import { FaGear } from "react-icons/fa6";
 import { GoGear } from "react-icons/go";
 import { AiOutlinePlusCircle, AiOutlineInfoCircle } from 'react-icons/ai';
+import { SiDatabricks } from "react-icons/si";
 import { BiTransferAlt } from 'react-icons/bi';
 import styles from './Sidebar.module.css';
 
@@ -21,10 +22,11 @@ export default function Sidebar() {
 
     const navItems = [
         // { href: '/dashboard/', label: 'Dashboard', icon: <MdDashboard /> },
-        { href: '/dashboard/ims', label: 'IMS Master', icon: <FaDatabase /> },
+        // { href: '/dashboard/ims', label: 'IMS Master', icon: <FaDatabase /> },
         { href: '/dashboard/live-stock', label: 'Live Stock', icon: <FaBoxes /> },
         { href: '/dashboard/inventory-form', label: 'In - Out', icon: <BiTransferAlt /> },
-        { href: '/dashboard/about', label: 'About', icon: <AiOutlineInfoCircle />, spacer: true },
+        // { href: '/dashboard/about', label: 'About', icon: <AiOutlineInfoCircle />, spacer: true },
+        { href: '/dashboard/inventory-form-responses', label: 'Entries', icon: <SiDatabricks /> },
         { href: '/dashboard/settings', label: 'Settings', icon: <GoGear /> },
         // { href: '/dashboard/logout', label: 'Log out', icon: <FiLogOut /> },
     ];

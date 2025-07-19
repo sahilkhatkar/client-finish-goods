@@ -96,7 +96,7 @@ export default function Livestock({stockData}) {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }}
             >
-                Live Stock Analysis
+                Live Stock
                 <span className={styles.liveDot} />
             </motion.h1>
 

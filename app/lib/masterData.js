@@ -6,9 +6,9 @@ import { promises as fs } from 'fs'; // ✅ this is missing
 // import dotenv from 'dotenv'; // <-- ADD THIS
 // dotenv.config({ path: '.env.local' }); // <-- LOAD ENV VARS
 
-const SHEET_ID = '1ySUFhzuW1AMobBuyWFgygCGBWIKO-yIm63RWjpbj-ws';
-const RANGE = 'IMS FG Master Packaging!A1:G';
-const SHEET_NAME = 'IMS FG Master Packaging';
+const SHEET_ID = '1fiZ2Nz5QVtaq2c1STC4UtBt9lukF7Tl8IpnXt2Lgpq8';
+const RANGE = 'FG Master!A1:G';
+const SHEET_NAME = 'FG Master';
 
 function toTitleCase(str) {
   return str.replace(/_/g, ' ')

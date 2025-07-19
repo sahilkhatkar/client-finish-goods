@@ -1,46 +1,38 @@
 'use client';
 import { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-// import Select from 'react-select';
 import styles from './page.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import dynamic from 'next/dynamic';
+import { addResponseToResponses } from '../../../store/slices/formResponsesSlice';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 const script_live_stock_url = "https://script.google.com/macros/s/AKfycbxnnkkjOo5tAHHIKwucr6GrB2pBY4S0PrLUFBMwDkPaImpeGuRvFCDadzfAiq-E_LEeag/exec"
 
 export default function InventoryForm() {
+    const dispatch = useDispatch();
 
-    const { masterData, loading1, error1 } = useSelector((state) => state.data);
-    const [isInward, setIsInward] = useState(false);
+    const { masterData, loading, error } = useSelector((state) => state.masterData);
+    const [isInward, setIsInward] = useState(true);
     const [rows, setRows] = useState([createNewRow()]);
     const [inputValue, setInputValue] = useState('');
     const [formErrors, setFormErrors] = useState([]);
     const filteredOptions = useRef([]);
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [date, setDate] = useState(() => {
         const today = new Date();
-        return today.toISOString().split('T')[0]; // "2025-06-26"
+        return today.toISOString().split('T')[0];
     });
-
-    const allPlantOptions = Array.from(new Set(masterData?.map(item => item.plant_name)))
-        .filter(Boolean)
-        .map(plant => ({
-            value: plant,
-            label: plant,
-        }));
 
     function createNewRow() {
         return {
             itemCode: '',
             qty: 1,
-            plant: '',
-            saleOrder: '',
+            piNumber: '',
             remarks: '',
             description: '',
         };
@@ -59,7 +51,6 @@ export default function InventoryForm() {
 
         const updatedRows = [...rows];
         updatedRows[index].itemCode = selectedOption?.value || '';
-        updatedRows[index].plant = selectedItem?.plant_name || '';
         updatedRows[index].description = selectedItem?.description || '';
         setRows(updatedRows);
     };
@@ -90,7 +81,6 @@ export default function InventoryForm() {
             const rowErrors = {};
             if (!row.itemCode) rowErrors.itemCode = 'Item code is required';
             if (!row.qty || isNaN(row.qty) || row.qty <= 0) rowErrors.qty = 'Quantity must be > 0';
-            if (!isInward && !row.saleOrder) rowErrors.saleOrder = 'Sale order no. is required';
             return rowErrors;
         });
 
@@ -110,29 +100,36 @@ export default function InventoryForm() {
 
         if (!validateRows()) return;
 
-        setIsSubmitting(true); // 🟢 Start spinner + disable button
+        setIsSubmitting(true);
 
         const payload = {
-            formType: isInward ? 'inward' : 'outward',
+            formType: isInward ? 'Inward' : 'Outward',
             date: formatDateForPayload(date),
             entries: rows,
         };
 
         const flatArray = payload.entries.map(entry => ({
-            ...entry,
-            formType: payload.formType,
-            date: payload.date
+            item_code: entry.itemCode,
+            stock_qty: isInward ? entry.qty : -Math.abs(entry.qty),
+            pi_number: entry.piNumber,
+            remarks: entry.remarks,
+            form_type: payload.formType,
+            date: payload.date,
+            timestamp: new Date().toLocaleString('en-GB').replace(',', ''),
         }));
 
         try {
-            const response = await fetch("script_live_stock_url", {
+            const response = await fetch('/api/form-responses-stock-data', {
                 method: 'POST',
-                body: JSON.stringify(flatArray),
+                body: JSON.stringify({ items: flatArray }),
             });
+
+            console.log(flatArray, "Flat Array");
 
             if (response.ok) {
                 toast.success('Inventory submitted successfully!');
-                setRows([createNewRow()]); // ✅ Clear after success
+                dispatch(addResponseToResponses(flatArray));
+                setRows([createNewRow()]);
                 setFormErrors([]);
             } else {
                 toast.error('Failed to submit inventory');
@@ -141,13 +138,11 @@ export default function InventoryForm() {
             console.error(err);
             toast.error('Error submitting inventory');
         } finally {
-            setIsSubmitting(false); // 🟢 Re-enable button
+            setIsSubmitting(false);
         }
     };
 
-
-    // if (loading1) return <div className={styles.loading}>Loading...</div>;
-    if (error1) return <div className={styles.error}>Error: {error1}</div>;
+    if (error) return <div className={styles.error}>Error: {error}</div>;
 
     const allItemOptions = masterData?.map((item) => ({
         value: item.item_code,
@@ -155,25 +150,26 @@ export default function InventoryForm() {
     }));
 
     return (
-        // <form className={styles.inventoryContainer} onSubmit={handleSubmit}>
         <form
             className={`${styles.inventoryContainer} ${isSubmitting ? styles.submitting : ''}`}
             onSubmit={handleSubmit}
         >
-
-            <h2 className={styles.heading}>Inventory Entry
-
-                <span className={`${styles.subheading} ${isInward ? styles.inward : styles.outward}`}>
-                    [  {isInward ? 'Inward' : 'Outward'} ]
-                </span>
-            </h2>
-
-
             <div className={styles.switchAndDate}>
-                <button type="button" onClick={handleToggle} className={styles.toggleBtn}>
-                    Switch to {isInward ? 'Outward' : 'Inward'}
-                </button>
-
+                <h2 className={styles.heading}>
+                    <div className={styles.toggleWrapper}>
+                        <label className={styles.toggleSwitch}>
+                            <input
+                                type="checkbox"
+                                checked={isInward}
+                                onChange={handleToggle}
+                            />
+                            <span className={styles.slider}></span>
+                        </label>
+                    </div>
+                    <span className={`${styles.subheading} ${isInward ? styles.inward : styles.outward}`}>
+                        [ {isInward ? 'Inward' : 'Outward'} ]
+                    </span>
+                </h2>
 
                 <div className={styles.datePickerWrapper}>
                     <label className={styles.dateLabel}>
@@ -189,7 +185,6 @@ export default function InventoryForm() {
                 </div>
             </div>
 
-
             <motion.div
                 key={isInward ? 'inward' : 'outward'}
                 initial={{ opacity: 0, y: 20 }}
@@ -202,17 +197,14 @@ export default function InventoryForm() {
                         <tr>
                             <th>#</th>
                             <th className={styles.itemCodeCol}>
-                                Item Code<span className={styles.required}>*</span>
+                                Item<span className={styles.required}>*</span>
                             </th>
                             <th className={styles.midWidth}>
                                 Qty<span className={styles.required}>*</span>
                             </th>
-                            <th className={styles.midWidth}>Plant</th>
-                            {!isInward && (
-                                <th className={styles.saleOrderCol}>
-                                    Sale Order No.<span className={styles.required}>*</span>
-                                </th>
-                            )}
+                            <th className={styles.piNumberCol}>
+                                PI No.
+                            </th>
                             <th className={styles.midWidth}>Remarks</th>
                             <th>Remove</th>
                         </tr>
@@ -263,33 +255,13 @@ export default function InventoryForm() {
                                     )}
                                 </td>
                                 <td>
-                                    <Select
-                                        className={styles.reactSelect}
-                                        placeholder="Select plant..."
-                                        value={
-                                            row.plant
-                                                ? { value: row.plant, label: row.plant }
-                                                : null
-                                        }
-                                        options={allPlantOptions}
-                                        onChange={(selected) => handleChange(index, 'plant', selected?.value || '')}
-                                        isClearable
+                                    <input
+                                        type="text"
+                                        value={row.piNumber}
+                                        onChange={(e) => handleChange(index, 'piNumber', e.target.value)}
+                                        placeholder="Enter PI No."
                                     />
-
                                 </td>
-                                {!isInward && (
-                                    <td>
-                                        <input
-                                            type="text"
-                                            value={row.saleOrder}
-                                            onChange={(e) => handleChange(index, 'saleOrder', e.target.value)}
-                                            placeholder="Enter Sale Order No."
-                                        />
-                                        {formErrors[index]?.saleOrder && (
-                                            <div className={styles.errorMsg}>{formErrors[index].saleOrder}</div>
-                                        )}
-                                    </td>
-                                )}
                                 <td>
                                     <input
                                         type="text"
@@ -326,13 +298,9 @@ export default function InventoryForm() {
                         'Submit'
                     )}
                 </button>
-
             </div>
 
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
-
-
         </form>
-
     );
 }

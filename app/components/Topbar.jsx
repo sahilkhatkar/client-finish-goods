@@ -54,6 +54,8 @@ export default function Topbar() {
       }`
       : pageTitle;
 
+  // console.log('Session from Topbar:', session);
+
   return (
     <motion.header
       className={styles.topbar}
@@ -93,7 +95,7 @@ export default function Topbar() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <p className={styles.name}>{user?.name}</p>
+              <p className={styles.name}>{user?.brand?.replace(/-/g, ' ')?.replace(/\b\w/g, c => c.toUpperCase())}</p>
               {/* <p className={styles.email}>{user?.email}</p> */}
               <p className={styles.email}>HR Exports Pvt. Ltd.</p>
               <button

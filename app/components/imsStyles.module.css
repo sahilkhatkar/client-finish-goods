@@ -1,5 +1,10 @@
 .tableContainer {
-  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+
+  padding: 1rem;
   background: var(--bg);
 }
 
@@ -8,7 +13,7 @@
   font-weight: 700;
   color: var(--primary);
   text-align: center;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .tableSubTitle {
@@ -16,7 +21,7 @@
   font-weight: 600;
   color: var(--accent);
   text-align: center;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
 }
 
 .tableWrapper {
@@ -140,7 +145,7 @@
 .searchBarWrapper {
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0;
+  /* margin: 1.5rem 0; */
 }
 
 .searchBar {
@@ -189,7 +194,7 @@
   z-index: 2;
 }
 
-.reactSelect > div {
+.reactSelect>div {
   border: 1px solid var(--primary);
   border-radius: 6px;
   font-size: 0.9rem;
@@ -273,13 +278,21 @@
   background-color: red;
   border-radius: 50%;
   margin-left: 0.6rem;
+  margin-bottom: 6px;
   animation: blink 1s infinite;
   box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Stock Quantity Summary */

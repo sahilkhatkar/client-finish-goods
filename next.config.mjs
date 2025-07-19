@@ -4,12 +4,12 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/dashboard/ims',
+        destination: '/dashboard/live-stock',
         permanent: false,
       },
       {
         source: '/dashboard',
-        destination: '/dashboard/ims',
+        destination: '/dashboard/live-stock',
         permanent: false,
       },
     ];

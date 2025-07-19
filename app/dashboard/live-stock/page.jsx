@@ -12,9 +12,9 @@ export default function LiveStockPage() {
 
   if (error) return <p style={{ padding: '1rem', color: 'red' }}>{error}</p>;
 
-  if (!sheetData.length) {
-    return <p style={{ padding: '1rem', color: 'red' }}>No data available</p>;
-  }
+  // if (!sheetData.length) {
+  //   return <p style={{ padding: '1rem', color: 'red' }}>No data available</p>;
+  // }
 
   return <Table stockData={sheetData} />;
 }

@@ -23,12 +23,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return user
           ? {
-            id: user.user,
+            // id: user.user,
             name: user.user,
             email: `${user.user}@example.com`,
             image: `https://i.pravatar.cc/150?u=${user.user}`,
-            role: user.role,
             brand: user.brand,
+            role: user.role,
             routes: user.routes,
             // Add any other user properties you need
           }
@@ -51,10 +51,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       Object.assign(session.user, {
-        id: token.id,
+        // id: token.id,
         name: token.name,
-        role: token.role,
         brand: token.brand,
+        role: token.role,
         routes: token.routes,
         // Add any other user properties you need
       });
