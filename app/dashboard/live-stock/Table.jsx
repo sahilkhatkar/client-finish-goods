@@ -36,16 +36,17 @@ export default function Livestock({stockData}) {
     };
 
     const COLUMNS = [
-        { key: 'item_code', label: 'Item Code', filterable: false },
+        // { key: 'item_code', label: 'Item Code', filterable: false },
         { key: 'description', label: 'Description', filterable: false },
         { key: 'pack_size', label: 'Pack Size', filterable: true },
-        { key: 'pack_type', label: 'Pack Type', filterable: true },
-        { key: 'unit', label: 'Unit', filterable: true },
-        { key: 'plant_name', label: 'Plant', filterable: true },
+        // { key: 'pack_type', label: 'Pack Type', filterable: true },
+        // { key: 'unit', label: 'Unit', filterable: true },
+        // { key: 'plant_name', label: 'Plant', filterable: true },
+        { key: 'hsn_code', label: 'HSN Code', filterable: true },
         { key: 'max_level', label: 'Max Level', filterable: true },
         { key: 'stock_qty', label: 'Stock Qty', filterable: false },
-        { key: 'unplanned_stock_qty', label: 'Unplanned Stock', filterable: false },
-        { key: 'pending_purchase_qty', label: 'Pending Purchase Qty', filterable: false },
+        // { key: 'unplanned_stock_qty', label: 'Unplanned Stock', filterable: false },
+        // { key: 'pending_purchase_qty', label: 'Pending Purchase Qty', filterable: false },
     ];
 
     const filteredData = useMemo(() => {

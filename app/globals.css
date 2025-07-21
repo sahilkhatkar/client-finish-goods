@@ -6,15 +6,28 @@
   --transition: 0.3s ease;
 
   /* Smaller & Minimal Font Sizes */
-  --font-xs: 0.65rem;   /* ~10px */
-  --font-sm: 0.75rem;   /* ~12px */
-  --font-base: 0.875rem; /* ~14px */
-  --font-md: 1rem;      /* ~16px */
-  --font-lg: 1.125rem;  /* ~18px */
-  --font-xl: 1.25rem;   /* ~20px */
+  --font-xs: 0.65rem;
+  /* ~10px */
+  --font-sm: 0.75rem;
+  /* ~12px */
+  --font-base: 0.875rem;
+  /* ~14px */
+  --font-md: 1rem;
+  /* ~16px */
+  --font-lg: 1.125rem;
+  /* ~18px */
+  --font-xl: 1.25rem;
+  /* ~20px */
 
 
-
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --error: #e74c3c;
+  --error-dark: #c0392b;
+  --gray-light: #f5f7fa;
+  --gray-border: #ccc;
+  --text-color: #2c3e50;
+  --font: 'Inter', sans-serif;
 
   /* New style variables */
 
@@ -22,12 +35,18 @@
   --transition: 0.3s ease;
 
   /* Font Sizes */
-  --font-xs: 0.65rem;   /* ~10px */
-  --font-sm: 0.75rem;   /* ~12px */
-  --font-base: 0.875rem; /* ~14px */
-  --font-md: 1rem;      /* ~16px */
-  --font-lg: 1.125rem;  /* ~18px */
-  --font-xl: 1.25rem;   /* ~20px */
+  --font-xs: 0.65rem;
+  /* ~10px */
+  --font-sm: 0.75rem;
+  /* ~12px */
+  --font-base: 0.875rem;
+  /* ~14px */
+  --font-md: 1rem;
+  /* ~16px */
+  --font-lg: 1.125rem;
+  /* ~18px */
+  --font-xl: 1.25rem;
+  /* ~20px */
 
   --radius-sm: 4px;
   --radius-md: 6px;

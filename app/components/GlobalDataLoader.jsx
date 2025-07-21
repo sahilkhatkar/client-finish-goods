@@ -22,7 +22,6 @@ export default function GlobalWrapper({ children }) {
     const { data: session, status } = useSession();
 
     useEffect(() => {
-        // ✅ Only proceed if the session is fully loaded and brand exists
         if (status !== 'authenticated' || !session?.user?.brand) return;
 
         const fetchMasterData = async () => {
@@ -32,49 +31,40 @@ export default function GlobalWrapper({ children }) {
 
                 const data = await res.json();
                 const filteredData = data.filter((row) =>
-                    row.brand?.toLowerCase() === session?.user?.brand?.toLowerCase()
+                    row.brand?.toLowerCase() === session.user.brand.toLowerCase()
                 );
 
                 console.log('Fetched master data:', filteredData);
                 dispatch(setSheetData(filteredData));
 
+                // ✅ After setting masterData, extract item_codes for filtering formResponses
+                const brandItemCodes = filteredData.map(row => row.item_code);
+
+                // 🟡 Now fetch formResponses and filter them based on brandItemCodes
+                const resForm = await fetch(`/api/form-responses-stock-data`);
+                if (!resForm.ok) throw new Error('Failed to fetch form responses');
+
+                const formData = await resForm.json();
+
+                // ✅ Filter form responses based on item_codes in masterData
+                const filteredFormData = formData.filter(response =>
+                    brandItemCodes.includes(response.item_code)
+                );
+
+                console.log('Filtered form responses:', filteredFormData);
+                dispatch(setFormResponses(filteredFormData));
+
             } catch (err) {
-                console.error('Error fetching sheet data:', err);
+                console.error('Error fetching data:', err);
             }
         };
-        console.log(masterData.length, "Master Data Length");
 
-        if (masterData.length === 0) {
+        // Only fetch if masterData not yet fetched
+        if (masterData.length === 0)
             fetchMasterData();
-        }
 
-        // Form Responses Data Fetching
-        const fetchFormResponses = async () => {
-            try {
-                const res = await fetch(`/api/form-responses-stock-data`);
-                if (!res.ok) throw new Error('Failed to fetch data');
 
-                const data = await res.json();
-                console.log('Fetched sheet data:', data);
-
-                dispatch(setFormResponses(data));
-
-            } catch (err) {
-                console.error('Error fetching sheet data:', err);
-            }
-        };
-        console.log(formResponses.length, "Form Responses Length");
-
-        if (formResponses.length === 0) {
-            fetchFormResponses();
-        }
-
-        // Optional: Dispatch this only when brand is confirmed
-        // dispatch(fetchSheetData(session.user.brand));
-
-    }, [dispatch,
-        // allCredentials,
-        session?.user?.brand, status]);
+    }, [dispatch, session?.user?.brand, status]);
 
     return <>{children}</>;
 }

@@ -15,9 +15,7 @@ function parseDate(str) {
     return new Date(`${month} ${day}, ${year}`);
 }
 
-
 export default function StockEntriesPage() {
-
     const { masterData = [] } = useSelector((state) => state.masterData);
     const { formResponses = [] } = useSelector((state) => state.formResponses);
 
@@ -29,27 +27,16 @@ export default function StockEntriesPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRow, setSelectedRow] = useState(null);
 
-    // const allKeys = useMemo(() => {
-    //     const keySet = new Set();
-    //     formResponses.forEach((entry) => Object.keys(entry).forEach((key) => keySet.add(key)));
-    //     return Array.from(keySet);
-    // }, [formResponses]);
-
-
     const allKeys = useMemo(() => {
         const keySet = new Set();
         formResponses.forEach((entry) => Object.keys(entry).forEach((key) => keySet.add(key)));
         const keys = Array.from(keySet);
-
         const itemCodeIndex = keys.indexOf('item_code');
         if (itemCodeIndex !== -1) {
             keys.splice(itemCodeIndex, 0, 'description'); // insert before item_code
         }
-
         return keys;
     }, [formResponses]);
-
-
 
     const filtered = useMemo(() => {
         const reversed = [...formResponses].reverse();
@@ -109,22 +96,17 @@ export default function StockEntriesPage() {
 
     const handleExport = () => {
         const csv = [
-            ['S. No.', ...allKeys], // Include S. No. in CSV
+            ['S. No.', ...allKeys],
             ...filtered.map((row, index) =>
                 [
                     `"${index + 1}"`,
-                    ...allKeys.map((key) =>
-                    // Only include the keys that are in allKeys
-                    // `"${row[key] ?? ''}"`
-
-                    {
+                    ...allKeys.map((key) => {
                         if (key === 'description') {
                             const matched = masterData.find((item) => item.item_code === row.item_code);
                             return `"${matched?.description ?? ''}"`;
                         }
                         return `"${row[key] ?? ''}"`;
-                    }
-                    )
+                    })
                 ].join(',')
             ),
         ].join('\n');
@@ -140,8 +122,6 @@ export default function StockEntriesPage() {
         URL.revokeObjectURL(url);
     };
 
-    console.log("all keys", allKeys);
-
     return (
         <div className={styles.container}>
             <h1 className={styles.heading}>📦 Stock Entries</h1>
@@ -150,7 +130,6 @@ export default function StockEntriesPage() {
                 <div className={styles.leftControls}>
                     <input
                         type="text"
-                        // placeholder="🔍 Search entries..."
                         placeholder="Search entries..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -180,7 +159,6 @@ export default function StockEntriesPage() {
                             />
                         </div>
                     </div>
-
                 </div>
 
                 <div className={styles.rightControls}>
@@ -195,7 +173,6 @@ export default function StockEntriesPage() {
                     <button className={styles.exportBtn} onClick={handleExport}>⬇ Export CSV</button>
                 </div>
             </div>
-
 
             <div className={styles.tableWrapper}>
                 <table className={styles.table}>
@@ -230,18 +207,8 @@ export default function StockEntriesPage() {
                                             val = matchedItem?.description || '—';
                                         }
 
-                                        const isQty = key === 'stock_qty';
-                                        const isType = key === 'form_type';
-
                                         return (
-                                            <td
-                                                key={key}
-                                                className={
-                                                    `${isQty ? (val < 0 ? styles.negative : styles.positive) : ''} 
-                ${isType ? (val === 'Inward' ? styles.inward : styles.outward) : ''} 
-                ${key === 'remarks' ? styles.remarksColumn : ''}`
-                                                }
-                                            >
+                                            <td key={key} className={styles.cell}>
                                                 {val ?? '-'}
                                             </td>
                                         );
@@ -253,14 +220,28 @@ export default function StockEntriesPage() {
                 </table>
             </div>
 
-            <div className={styles.entriesInfo}>
-                Showing {paginated.length} of {filtered.length} entries
-            </div>
 
-            <div className={styles.pagination}>
-                <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>← Prev</button>
-                <span>Page {page} of {totalPages}</span>
-                <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>Next →</button>
+            <div className={styles.tableFooter}>
+
+                {/* <div className={styles.entriesInfo}>
+                    Showing {paginated.length} of {filtered.length} entries
+                </div> */}
+
+                <div className={styles.entriesInfo}>
+                    Showing {paginated.length} of {filtered.length} entries
+                    {filtered.length !== formResponses.length && (
+                        <span className={styles.filteredInfo}>
+                            (filtered from {formResponses.length} total)
+                        </span>
+                    )}
+                </div>
+
+
+                <div className={styles.pagination}>
+                    <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>← Prev</button>
+                    <span>Page {page} of {totalPages}</span>
+                    <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>Next →</button>
+                </div>
             </div>
 
             {selectedRow && (
