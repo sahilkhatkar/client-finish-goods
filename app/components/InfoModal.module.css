@@ -36,14 +36,14 @@
 .detailRow {
   display: flex;
   justify-content: space-between;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.25rem;
   margin-right: 1rem;
 }
 
 .key {
-  font-weight: 600;
+  font-weight: bold;
   color: #444;
   text-transform: capitalize;
 }

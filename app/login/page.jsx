@@ -19,6 +19,10 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+
+
   const handleLogin = async () => {
     if (!email || !password) {
       toast.warning('Please enter both email and password');
@@ -98,9 +102,12 @@ export default function LoginPage() {
 
         {error && <p className={styles.error}>{error}</p>}
 
-        <div className={styles.forgot}>
-          <a href="#">Forgot password?</a>
-        </div>
+        {/* <div className={styles.forgot}>
+          <button onClick={() => setShowResetModal(true)} className={styles.forgotLink}>
+            Forgot password?
+          </button>
+        </div> */}
+
 
         <motion.button
           className={styles.button}
@@ -119,7 +126,56 @@ export default function LoginPage() {
           )}
         </motion.button>
 
-      </motion.div>
+
+
+
+
+
+        </motion.div>
+        {showResetModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <h3>Reset Password</h3>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className={styles.input}
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+              />
+              <div className={styles.modalActions}>
+                <button
+                  className={styles.button}
+                  onClick={() => {
+                    if (!resetEmail) {
+                      toast.warning('Please enter your email');
+                      return;
+                    }
+                    // Simulate reset request
+                    toast.success('Password reset link sent!');
+                    setShowResetModal(false);
+                    setResetEmail('');
+                  }}
+                >
+                  Send Reset Link
+                </button>
+                <button
+                  className={styles.cancelButton}
+                  onClick={() => {
+                    setShowResetModal(false);
+                    setResetEmail('');
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+
+
+
     </div>
   );
 }

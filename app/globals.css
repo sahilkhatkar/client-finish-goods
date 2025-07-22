@@ -91,7 +91,8 @@
 .theme-modern {
   --bg: #ffffff;
   --text: #1e1e2f;
-  --card-bg: #f3f3f8;
+  /* --card-bg: #f3f3f8; */
+  --card-bg: #fff;
   --primary: #4a90e2;
   --primary-light: #d6e4ff;
   --secondary: #50e3c2;

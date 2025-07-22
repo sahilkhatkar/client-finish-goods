@@ -37,18 +37,6 @@ export default function RootLayout({ children }) {
           </ThemeProvider>
         </Suspense>
       </body>
-
-      {/* <script
-        dangerouslySetInnerHTML={{
-          __html: `
-      (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        document.body.classList.add('theme-' + theme);
-      })();
-    `,
-        }}
-      /> */}
-
     </html>
   );
 }

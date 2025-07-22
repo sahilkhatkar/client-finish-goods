@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './StockTable.module.css';
 import { useSelector } from 'react-redux';
 import { IoIosSearch } from "react-icons/io";
+import { SiDatabricks } from "react-icons/si";
 
 function parseDate(str) {
     if (!str || typeof str !== 'string') return new Date('Invalid Date');
@@ -37,6 +38,8 @@ export default function StockEntriesPage() {
         }
         return keys;
     }, [formResponses]);
+
+    console.log(allKeys);
 
     const filtered = useMemo(() => {
         const reversed = [...formResponses].reverse();
@@ -124,7 +127,9 @@ export default function StockEntriesPage() {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.heading}>📦 Stock Entries</h1>
+            <h1 className={styles.heading}>
+                {/* 📦 */}
+                <SiDatabricks /> Stock Entries</h1>
 
             <div className={styles.toolbar}>
                 <div className={styles.leftControls}>
@@ -174,96 +179,203 @@ export default function StockEntriesPage() {
                 </div>
             </div>
 
-            <div className={styles.tableWrapper}>
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th>S. No.</th>
-                            {allKeys.map((key) => (
-                                <th key={key} onClick={() => requestSort(key)}>
-                                    {key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-                                    {sortConfig.key === key && (sortConfig.direction === 'asc' ? ' ▲' : ' ▼')}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <AnimatePresence>
-                            {paginated.map((entry, i) => (
-                                <motion.tr
-                                    key={i}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    onClick={() => setSelectedRow(entry)}
-                                    className={styles.row}
-                                >
-                                    <td>{(page - 1) * pageSize + i + 1}</td>
-                                    {allKeys.map((key) => {
-                                        let val = entry[key];
 
-                                        if (key === 'description') {
-                                            const matchedItem = masterData.find((item) => item.item_code === entry.item_code);
-                                            val = matchedItem?.description || '—';
-                                        }
+            {filtered.length > 0 ?
+                <>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    {allKeys.map((key) => (
+                                        <th key={key} onClick={() => requestSort(key)}>
+                                            {key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                                            {sortConfig.key === key && (sortConfig.direction === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <AnimatePresence>
+                                    {paginated.map((entry, i) => (
+                                        <motion.tr
+                                            key={i}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            onClick={() => setSelectedRow(entry)}
+                                            className={styles.row}
+                                        >
+                                            <td>{(page - 1) * pageSize + i + 1}</td>
+                                            {allKeys.map((key) => {
+                                                let val = entry[key];
 
-                                        return (
-                                            <td key={key} className={styles.cell}>
-                                                {val ?? '-'}
-                                            </td>
-                                        );
-                                    })}
-                                </motion.tr>
-                            ))}
-                        </AnimatePresence>
-                    </tbody>
-                </table>
-            </div>
+                                                if (key === 'description') {
+                                                    const matchedItem = masterData.find((item) => item.item_code === entry.item_code);
+                                                    val = matchedItem?.description || '—';
+                                                }
+
+                                                const isQty = key === 'stock_qty';
+                                                const isType = key === 'form_type';
+
+                                                return (
+                                                    // <td key={key} className={styles.cell}>
+                                                    <td
+                                                        key={key}
+                                                        className={
+                                                            `${isQty ? (val < 0 ? styles.negative : styles.positive) : ''} 
+                                                    ${isType ? (val === 'Inward' ? styles.inward : styles.outward) : ''} 
+                                                    ${key === 'remarks' ? styles.remarksColumn : ''}`
+                                                        }
+                                                    >
+                                                        {val ?? '-'}
+                                                    </td>
+                                                );
+                                            })}
+                                        </motion.tr>
+                                    ))}
+                                </AnimatePresence>
+                            </tbody>
+                        </table>
+                    </div>
 
 
-            <div className={styles.tableFooter}>
+                    <div className={styles.tableFooter}>
 
-                {/* <div className={styles.entriesInfo}>
-                    Showing {paginated.length} of {filtered.length} entries
-                </div> */}
+                        <div className={styles.entriesInfo}>
+                            Showing {paginated.length} of {filtered.length} entries
+                            {filtered.length !== formResponses.length && (
+                                <span className={styles.filteredInfo}>
+                                    (filtered from {formResponses.length} total)
+                                </span>
+                            )}
+                        </div>
 
-                <div className={styles.entriesInfo}>
-                    Showing {paginated.length} of {filtered.length} entries
-                    {filtered.length !== formResponses.length && (
-                        <span className={styles.filteredInfo}>
-                            (filtered from {formResponses.length} total)
-                        </span>
-                    )}
+                        <div className={styles.pagination}>
+                            <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>← Prev</button>
+                            <span>Page {page} of {totalPages}</span>
+                            <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>Next →</button>
+                        </div>
+                    </div>
+                </>
+                :
+                <div className={styles.emptyResults}>
+                    <h3>No entries found</h3>
+                    <p>Try adjusting your search criteria or date range.</p>
                 </div>
-
-
-                <div className={styles.pagination}>
-                    <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>← Prev</button>
-                    <span>Page {page} of {totalPages}</span>
-                    <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>Next →</button>
-                </div>
-            </div>
-
+            }
             {selectedRow && (
+                // <div className={styles.modalBackdrop} onClick={() => setSelectedRow(null)}>
+                //     <motion.div
+                //         className={styles.modal}
+                //         initial={{ scale: 0.8, opacity: 0 }}
+                //         animate={{ scale: 1, opacity: 1 }}
+                //         exit={{ scale: 0.8, opacity: 0 }}
+                //         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                //         onClick={(e) => e.stopPropagation()}
+                //     >
+                //         <h2 className={styles.modalTitle}>📄 Entry Details</h2>
+                //         <div className={styles.modalContent}>
+                //             {allKeys.map((key) => (
+                //                 <div className={styles.modalRow} key={key}>
+                //                     <span className={styles.modalKey}>{key.replace(/_/g, ' ')}</span>
+                //                     <span className={styles.modalValue}>{selectedRow[key] ?? '-'}</span>
+                //                 </div>
+                //             ))}
+                //         </div>
+                //         <button className={styles.closeBtn} onClick={() => setSelectedRow(null)}>✖ Close</button>
+                //     </motion.div>
+                // </div>
+
+
+
+
+
+
+
                 <div className={styles.modalBackdrop} onClick={() => setSelectedRow(null)}>
                     <motion.div
                         className={styles.modal}
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.8, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                        transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 25,
+                            mass: 0.8
+                        }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className={styles.modalTitle}>📄 Entry Details</h2>
-                        <div className={styles.modalContent}>
-                            {allKeys.map((key) => (
-                                <div className={styles.modalRow} key={key}>
-                                    <span className={styles.modalKey}>{key.replace(/_/g, ' ')}</span>
-                                    <span className={styles.modalValue}>{selectedRow[key] ?? '-'}</span>
-                                </div>
-                            ))}
+                        {/* Header with improved styling */}
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>
+                                <span className={styles.titleIcon}>📋</span>
+                                Entry Details
+                            </h2>
+                            <button
+                                className={styles.closeIcon}
+                                onClick={() => setSelectedRow(null)}
+                                aria-label="Close modal"
+                            >
+                                ✕
+                            </button>
                         </div>
-                        <button className={styles.closeBtn} onClick={() => setSelectedRow(null)}>✖ Close</button>
+
+                        {/* Scrollable content area */}
+                        <div className={styles.modalContent}>
+                            {allKeys.length > 0 ? (
+                                <div className={styles.detailsGrid}>
+                                    {allKeys.map((key, index) => (
+                                        <motion.div
+                                            className={styles.modalRow}
+                                            key={key}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: index * 0.05 }}
+                                        >
+                                            <div className={styles.keyContainer}>
+                                                <span className={styles.modalKey}>
+                                                    {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                                </span>
+                                            </div>
+                                            <div className={styles.valueContainer}>
+                                                <span className={styles.modalValue}>
+                                                    {selectedRow[key] !== null && selectedRow[key] !== undefined && selectedRow[key] !== ''
+                                                        ? String(selectedRow[key])
+                                                        : <span className={styles.emptyValue}>No data</span>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className={styles.noData}>
+                                    <span className={styles.noDataIcon}>🔍</span>
+                                    <p>No data available to display</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer with action buttons */}
+                        <div className={styles.modalFooter}>
+                            <button
+                                className={`${styles.btn} ${styles.btnSecondary}`}
+                                onClick={() => setSelectedRow(null)}
+                            >
+                                <span>✓</span> Close
+                            </button>
+                            {/* Optional: Add more action buttons */}
+                            {/* 
+            <button 
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                onClick={() => handleEdit(selectedRow)}
+            >
+                <span>✏️</span> Edit
+            </button>
+            */}
+                        </div>
                     </motion.div>
                 </div>
             )}
